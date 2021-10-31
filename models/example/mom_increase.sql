@@ -23,12 +23,17 @@ NEW_ACTIVE_CASES,TOTAL_CASES,TOTAL_DEATHS_PER_MILLION,
 GROWTH_FACTOR_OF_NEW_CASES
 
 from source_data
+),
+
+monthly_death as (
+select  MONTH(DATE_) month_mm,
+year(date_) as year_yyyy
+        sum(TOTAL_CASES) as tot_monthly_cases
+from covid_case_details
+group by month_mm,year_yyyy
+order by year_yyyy,month_mm 
 )
 
 
-select  MONTH(DATE_) month_mm,
-        sum(TOTAL_CASES) as tot_monthly_cases
-from covid_case_details
-where year(date_) = 2020
-group by month_mm
-order by month_mm 
+
+select * from monthly_death
