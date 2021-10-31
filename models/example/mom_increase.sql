@@ -4,15 +4,6 @@ select *
 from "FIVETRAN_INTERVIEW_DB"."GOOGLE_SHEETS"."COVID_19_INDONESIA_SHIVA_KUMAR"
 ),
 
-geo_attributes as (
-select _ROW, TIME_ZONE,LATITUDE,LONGITUDE,LOCATION_ISO_CODE,
-TOTAL_REGENCIES,
-POPULATION,POPULATION_DENSITY,TOTAL_CITIES,TOTAL_DISTRICTS,ISLAND,
-PROVINCE,SPECIAL_STATUS,CONTINENT,TOTAL_URBAN_VILLAGES,TOTAL_RURAL_VILLAGES,COUNTRY,
-LOCATION_LEVEL,AREA_KM_2_,LOCATION
-from source_data
-),
-
 covid_case_details as (
 select _ROW, TOTAL_RECOVERED,TOTAL_CASES_PER_MILLION,
 GROWTH_FACTOR_OF_NEW_DEATHS,TOTAL_ACTIVE_CASES,
@@ -35,13 +26,16 @@ order by year_yyyy,month_mm
 )
 
 
+mom_growth (select a.month_mm,a.year_yyyy, 
+(a.tot_monthly_cases - b.tot_monthly_cases) as diff_cases
+from monthly_death as a
+left join (select * from monthly_death ) as b on
+concat(b.month_mm+1,b.year_yyyy) = concat(a.month_mm,a.year_yyyy)
+order by a.year_yyyy,a.month_mm )
 
-select *,
-(select tot_monthly_cases 
-from monthly_death offset 1) as prev_month_cases
- from monthly_death
+
+select * from mom_growth
 
 
 
 
- 
