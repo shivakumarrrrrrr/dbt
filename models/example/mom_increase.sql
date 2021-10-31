@@ -26,7 +26,7 @@ order by year_yyyy,month_mm
 ),
 
 
-mom_growth (select a.month_mm,a.year_yyyy, 
+mom_growth as (select a.month_mm,a.year_yyyy, 
 (a.tot_monthly_cases - b.tot_monthly_cases) as diff_cases
 from monthly_death as a
 left join (select * from monthly_death ) as b on
