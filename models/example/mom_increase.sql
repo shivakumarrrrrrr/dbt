@@ -23,7 +23,7 @@ year(date_) as year_yyyy,
 from covid_case_details
 group by month_mm,year_yyyy
 order by year_yyyy,month_mm 
-)
+),
 
 
 mom_growth (select a.month_mm,a.year_yyyy, 
